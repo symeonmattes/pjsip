@@ -1,5 +1,5 @@
 # PJSIP cordova plugin
-**NOTICE!** This project currently supports only Android devices. It has been tested only in devices with armabi architecture.
+**NOTICE!** This project currently supports only Android devices and it has been tested only in devices with armabi architecture.
 
 This plugin is based on [PJSIP library] (http://www.pjsip.org) version 2.5.5. PJSIP is an open source multimedia communication library writte in C language that supports many protocols including VoIP communications. The current implementation has used SIP, SDP, RTP protocols for VoIP telephony.
 
