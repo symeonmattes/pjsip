@@ -28,24 +28,12 @@ PJSIP.prototype.isConnected = function(success, error) {
     exec(success, error, "PJSIP", "isconnected", []);
 };
 
-PJSIP.prototype.muteCall = function(arg0, success, error) {
-    exec(success, error, "PJSIP", "mutecall", [arg0]);
-};
-
 PJSIP.prototype.activateSpeaker = function(arg0, success, error) {
     exec(success, error, "PJSIP", "activatespeaker", [arg0]);
 };
 
 PJSIP.prototype.dtmfCall = function(arg0, success, error) {
     exec(success, error, "PJSIP", "dtmfcall", [arg0]);
-};
-
-PJSIP.prototype.listenCall = function(success, error) {
-    exec(success, error, "PJSIP", "listen", []);
-};
-
-PJSIP.prototype.stopListenCall = function(success, error) {
-    exec(success, error, "PJSIP", "stoplisten", []);
 };
 
 PJSIP.prototype.muteMicrophone = function(arg0, success, error) {
@@ -62,15 +50,6 @@ PJSIP.prototype.declineCall = function(success, error) {
 
 PJSIP.prototype.acceptCall = function(success, error) {
     exec(success, error, "PJSIP", "acceptcall", []);
-};
-
-
-PJSIP.prototype.incommingCall = function(success, error) {
-    exec(success, error, "PJSIP", "incommingcall", []);
-};
-
-PJSIP.prototype.answerCall = function(success, error) {
-    exec(success, error, "PJSIP", "answercall", []);
 };
 
 PJSIP.prototype.callState = function(arg0,success, error) {
