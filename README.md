@@ -1,7 +1,7 @@
 # PJSIP cordova plugin
 **NOTICE!** This project currently supports only Android devices and it has been tested only in devices with armabi architecture.
 
-This plugin is based on [PJSIP library] (http://www.pjsip.org) version 2.5.5. PJSIP is an open source multimedia communication library writte in C language that supports many protocols including VoIP communications. The current implementation has used SIP, SDP, RTP protocols for VoIP telephony.
+This plugin is based on [PJSIP library](http://www.pjsip.org) version 2.5.5. PJSIP is an open source multimedia communication library writte in C language that supports many protocols including VoIP communications. The current implementation has used SIP, SDP, RTP protocols for VoIP telephony.
 
 # How to use
 
@@ -12,7 +12,7 @@ The PJSIP javascript object has four prototypes methods that can be overriden fo
 - PJSIP.stateCallEnd(): Event triggered when a call has ended.
 - PJSIP.stateCallIn(arg0): Event triggered when there is an incoming call. arg0 is the number of the device that calls.
 
-This methods can be used for changing the layout of the application.
+These methods can be used for changing the layout of the application.
 
 Further functions have been implemented in www/PJSIP.js, each of which is responsible for different actions in VoIP communications. This include:
 
