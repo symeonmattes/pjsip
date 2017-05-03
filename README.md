@@ -16,14 +16,18 @@ This methods can be used for changing the layout of the application.
 
 Further functions have been implemented in www/PJSIP.js, each of which is responsible for different actions in VoIP communications. This include:
 
+- PJSIP.isSupported: If PJSIP is supported
 - PJSIP.connect(arg0,arg1,arg2,arg3): User arg0 with password ar1 connects to system with IP arg2 and Proxy IP arg3. arg3 most of the times is not necessary and '' can be used.
 - PJSIP.disconnect: Unregistering from the system. 
+- PJSIP.makeCall(arg0): Making a call to device arg0.
 - PJSIP.endCall: Ending a call
 - PJSIP.muteCall: Muting a call
 - PSJIP.activateSpeaker: Activating the speaker
 - PJSIP.dtmfCall(arg0): Sending dtmf number arg0
 - PJSIP.declineCall: Declining an incoming call
-- PJSIP.answerCall: Answering an incoming call
+- PJSIP.acceptCall: Accepting an incoming call
+- PJSIP.muteMicrophone(arg0): Muting (arg0=true) or Unmuting (arg0=false) the microphone
+
 
 
 # Known issues
