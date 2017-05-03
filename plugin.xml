@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="gr.navarino.PJSIP" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>PJSIP</name>
+    <description>PJSIP plugin for SIP telephony</description>
+    <js-module name="PJSIP" src="www/PJSIP.js">
+      <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+        <clobbers target="cordova.plugins.PJSIP" />
+    </js-module>
+    <platform name="android">
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="PJSIP" >
+            <param name="android-package" value="gr.navarino.cordova.plugin.PJSIP" />
+            <param name="onload" value="true" />
+        </feature>
+      </config-file>
+      
+      <config-file target="AndroidManifest.xml" parent="/*">
+          <uses-permission android:name="android.permission.USE_SIP" />
+          <uses-permission android:name="android.permission.INTERNET" />
+          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+          <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+          <uses-permission android:name="android.permission.WAKE_LOCK"/>
+          <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+          <uses-permission android:name="android.permission.RECORD_AUDIO" />
+          <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+          <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+          <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+          <!--
+          <uses-feature android:name="android.hardware.sip.voip" android:required="true" />
+          <uses-feature android:name="android.hardware.wifi" android:required="true" />
+          <uses-feature android:name="android.hardware.microphone" android:required="true" />
+          <uses-feature android:name="android.software.sip" android:required="true" />
+          -->
+      </config-file>      
+      
+      <source-file src="sounds/busytone.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf0.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf1.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf2.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf3.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf4.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf5.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf6.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf7.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf8.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmf9.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmfhash.wav" target-dir="res/raw/" />
+      <source-file src="sounds/dtmfstar.wav" target-dir="res/raw/" />
+      <source-file src="sounds/ringbacktone.wav" target-dir="res/raw/" />
+      <source-file src="sounds/ringtone.mp3" target-dir="res/raw/" />
+      
+      <source-file src="src/android/PJSIP.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/Utils.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/scAudioManager.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      
+      <source-file src="src/android/PjsipActions.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/MyAccount.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/MyApp.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/MyAppObserver.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/MyBuddy.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/MyCall.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/PjsipActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      
+      
+      
+      <!-- <source-file src="src/android/jniLibs/armeabi/libpjsua2.so" target-dir="libs/armeabi" /> -->
+      <!-- <source-file src="src/android/jniLibs/arm64-v8a/libpjsua2.so" target-dir="libs/arm64-v8a" /> -->
+      
+      <!-- <source-file src="src/android/jniLibs/armeabi/libpjsua2.so" target-dir="libs/armearm64-v8aabi" />
+      <source-file src="src/android/jniLibs/armeabi/libopenh264.so" target-dir="libs/arm64-v8a" />
+      <source-file src="src/android/jniLibs/armeabi/libyuv.so" target-dir="libs/arm64-v8a" />    -->
+      
+
+      <source-file src="src/android/jniLibs/armeabi/libpjsua2.so" target-dir="libs/armeabi" />
+      <!-- <source-file src="src/android/jniLibs/armeabi/libopenh264.so" target-dir="libs/armeabi" /> -->
+      <!-- <source-file src="src/android/jniLibs/armeabi/libyuv.so" target-dir="libs/armeabi" /> -->
+      
+      <!-- <source-file src="src/android/jniLibs/armeabi-v7a/libpjsua2.so" target-dir="libs/armeabi-v7a" />
+      <source-file src="src/android/jniLibs/armeabi-v7a/libopenh264.so" target-dir="libs/armeabi-v7a" />
+      <source-file src="src/android/jniLibs/armeabi-v7a/libyuv.so" target-dir="libs/armeabi-v7a" />
+            
+      <source-file src="src/android/jniLibs/x86/libpjsua2.so" target-dir="libs/x86" />
+      <source-file src="src/android/jniLibs/x86/libopenh264.so" target-dir="libs/x86" />
+      <source-file src="src/android/jniLibs/x86/libyuv.so" target-dir="libs/x86" />   
+      
+      <source-file src="src/android/jniLibs/x86/libpjsua2.so" target-dir="libs/x86_64" />
+      <source-file src="src/android/jniLibs/x86/libopenh264.so" target-dir="libs/x86_64" />
+      <source-file src="src/android/jniLibs/x86/libyuv.so" target-dir="libs/x86_64" /> -->
+         
+      <!-- <source-file src="src/android/jniLibs/x86_64/libpjsua2.so" target-dir="libs/x86_64" /> -->      
+      
+      
+      <!--
+      <source-file src="src/android/PJSIPCallActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
+      <source-file src="src/android/PJSIPMainActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
+      <source-file src="src/android/PJSIPMyApp.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
+      
+      
+      
+      <source-file src="src/android/MyAccount.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAccount/" />
+      <source-file src="src/android/MyAccountConfig.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAccountConfig/" />
+      <source-file src="src/android/MyApp.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyApp/" />
+      <source-file src="src/android/MyAppObserver.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAppObserver/" />
+      <source-file src="src/android/MyBuddy.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyBuddy/" />
+      <source-file src="src/android/MyCall.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyCall/" />
+      <source-file src="src/android/MyLogWriter.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyLogWriter/" />
+      -->
+      
+      <source-file src="src/android/api/PjCamera.java" target-dir="src/org/pjsip" />
+      <source-file src="src/android/api/PjCameraInfo.java" target-dir="src/org/pjsip" />
+      
+      <source-file src="src/android/api/pjsua2/Account.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountCallConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountMediaConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountMwiConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountNatConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountPresConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountRegConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountSipConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AccountVideoConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudDevManager.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioDevInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioDevInfoVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioMedia.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioMediaPlayer.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioMediaPlayerInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioMediaRecorder.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AudioMediaVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AuthCredInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/AuthCredInfoVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Buddy.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/BuddyConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/BuddyInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/BuddyVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Call.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallMediaInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallMediaInfoVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallOpParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallSendRequestParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallSetting.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CallVidSetStreamParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CodecFmtp.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CodecFmtpVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CodecInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/CodecInfoVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ConfPortInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ContainerNode.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Endpoint.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/EpConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Error.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/FindBuddyMatch.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/IntVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/JbufState.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/JsonDocument.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/LogConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/LogEntry.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/LogWriter.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/LossType.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MathStat.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Media.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaCoordinate.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaEventData.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaFmtChangedEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaFormat.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaFormatAudio.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaFormatVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaFormatVideo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaSize.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/MediaTransportInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallMediaEventParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallMediaStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallMediaTransportStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallRedirectedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallReplaceRequestParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallReplacedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallRxOfferParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallSdpCreatedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallTransferRequestParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallTransferStatusParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallTsxStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCallTxOfferParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnCreateMediaTransportParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnDtmfDigitParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnIncomingCallParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnIncomingSubscribeParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnInstantMessageParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnInstantMessageStatusParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnMwiInfoParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnNatCheckStunServersCompleteParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnNatDetectionCompleteParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnRegStartedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnRegStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnSelectAccountParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnStreamCreatedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnStreamDestroyedParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnTimerParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnTransportStateParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/OnTypingIndicationParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/PendingJob.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/PersistentDocument.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/PersistentObject.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/PresNotifyParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/PresenceStatus.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/RtcpSdes.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/RtcpStat.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/RtcpStreamStat.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/RxMsgEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SWIGTYPE_p_p_void.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SWIGTYPE_p_pj_bool_t.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SWIGTYPE_p_pj_ssize_t.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SWIGTYPE_p_pjmedia_vid_dev_hwnd_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SWIGTYPE_p_void.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SdpSession.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SendInstantMessageParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SendTypingIndicationParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipEventBody.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipHeader.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipHeaderVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipMediaType.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipMultipartPart.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipMultipartPartVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipRxData.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipTransaction.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipTxData.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/SipTxOption.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/StreamInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/StreamStat.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/StringVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TimeVal.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TimerEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TlsConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDesc.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDescVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDigit.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDigitMapDigit.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDigitMapVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneDigitVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/ToneGenerator.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TransportConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TransportInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TsxStateEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TsxStateEventSrc.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TxErrorEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/TxMsgEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/UaConfig.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/UserEvent.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/Version.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VidCodecParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VidDevManager.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoDevInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoDevInfoVector.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoPreview.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoPreviewOpParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoSwitchParam.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoWindow.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoWindowHandle.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/VideoWindowInfo.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/WindowHandle.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_constants_.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_file_access.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_log_decoration.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_qos_flag.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_qos_params.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_qos_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_qos_wmm_prio.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_ssl_cipher.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_ssl_sock_proto.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_stun_nat_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pj_turn_tp_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_aud_dev_cap.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_aud_dev_route.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_dir.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_event_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_file_player_option.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_file_writer_option.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_format_id.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_orient.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_srtp_use.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_tone_desc.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_tone_digit.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_tone_digit_map.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_tp_proto.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_vid_dev_cap.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_vid_dev_std_index.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_vid_packing.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjmedia_vid_stream_rc_method.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjrpid_activity.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_cred_data_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_dialog_cap_status.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_event_id_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_evsub_state.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_hdr_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_inv_state.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_redirect_op.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_role_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_ssl_method.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_status_code.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_transport_flags_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_transport_state.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_transport_type_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsip_tsx_state_e.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua2.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua2Constants.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua2JNI.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_100rel_use.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_buddy_status.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_call_flag.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_call_hold_type.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_call_media_status.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_call_vid_strm_op.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_create_media_transport_flag.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_destroy_flag.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_invalid_id_const_.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_ipv6_use.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_med_tp_st.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_sip_timer_use.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_snd_dev_mode.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_state.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_stun_use.java" target-dir="src/org/pjsip/pjsua2" />
+      <source-file src="src/android/api/pjsua2/pjsua_vid_req_keyframe_method.java" target-dir="src/org/pjsip/pjsua2" />
+      
+
+
+      <!--
+       <config-file target="AndroidManifest.xml" parent="/manifest/application">
+          <receiver android:name="gr.navarino.PJSIPReceiver" android:label="Call Receiver">
+            <intent-filter>
+                <action android:name="gr.navarino.PJSIP.INCOMING_CALL"/>
+                -->
+                <!--
+                <action android:name="android.net.sip.SIP_SERVICE_UP" />
+                <action android:name="android.intent.action.PHONE_STATE" />
+                -->
+      <!--                
+            </intent-filter>
+          </receiver>
+      </config-file>
+      
+      <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <intent-filter>
+                <action android:name="gr.navarino.pjsip.INCOMING_CALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+      </config-file>
+      
+      <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+        <receiver android:name="gr.navarino.pjsip.PjSipActivity" android:label="PJSIP">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="gr.navarino.PjSipActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:label="Call"></receiver>        
+      </config-file>      
+                -->
+      
+      <!--
+      <lib-file src="src/android/libs/armeabi" arch="device" target-dir="libs"/>
+      <lib-file src="src/android/libs/armeabi-v7a" arch="device" target-dir="libs"/>
+      <lib-file src="src/android/libs/classes.jar" target-dir="libs"/>
+      <lib-file src="src/android/libs/simple-xml-2.3.4.jar" target-dir="libs"/>
+      -->
+    </platform>
+    <platform name="ios">
+
+        <config-file target="config.xml" parent="/*">
+            <feature name="PJSIP">
+                <param name="ios-package" value="gr.navarino.PJSIP" />
+            </feature>
+            <!-- <preference name="StatusBarOverlaysWebView" value="true" />
+            <preference name="StatusBarStyle" value="lightcontent" />             -->
+        </config-file>
+        <!-- <header-file src="src/ios/PJSIP.h" /> -->
+        <source-file src="src/ios/PJSIP.h" />
+        <source-file src="src/ios/PJSIP.m" />
+    </platform>
+</plugin>

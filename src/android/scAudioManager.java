@@ -1,0 +1,143 @@
+package gr.navarino.cordova.plugin;
+
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.ToneGenerator;
+import android.util.Log;
+import android.media.MediaPlayer;
+
+import com.navarino.infinity4u.R;
+
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
+
+/**
+ * Created by infuser on 11/04/17.
+ */
+public class scAudioManager {
+
+    private MediaPlayer mediaPlayer = null;
+    private ToneGenerator mRingbackTone;
+    private Ringtone mRingtone = null;
+    private Context mContext;
+    private static CordovaInterface cordova = null;
+    private static CordovaWebView webView =  null;
+    private static String TAG = "scAudioManager";
+
+
+    private static scAudioManager ourInstance = new scAudioManager();
+
+    public static scAudioManager getInstance() {
+        return ourInstance;
+    }
+
+    private scAudioManager() {
+    }
+
+
+
+
+    void initialise(CordovaInterface crd, CordovaWebView wbview){
+
+
+        cordova = crd;
+        webView = wbview;
+
+        mContext = cordova.getActivity();
+
+    }
+
+
+
+    public void setSpeakerMode(final Boolean isActive) {
+        cordova.getThreadPool().execute(new Runnable() {
+            public void run() {
+                Log.d("SIP", "setSpeakerMode");
+                AudioManager am = ((AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE));
+                am.setMode(AudioManager.MODE_NORMAL);
+                am.setSpeakerphoneOn(isActive);
+            }
+        });
+    }
+
+    public void muteMicrophone(Boolean state) {
+        Log.d("SIP", "muteMicrophone: " + state.toString());
+        AudioManager am = ((AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE));
+        am.setMicrophoneMute(state);
+    }
+
+
+    public synchronized void startRingbackTone() {
+
+        this.playTone(R.raw.ringbacktone,true);
+    }
+
+    public synchronized void startRingtone() {
+        this.playTone(R.raw.ringtone,true);
+    }
+
+    public synchronized void stopRingtone() {
+
+        this.stopTone();
+    }
+
+    private synchronized void startBusyTone() {
+
+        this.playTone(R.raw.busytone,false);
+
+    }
+
+    public void playDTMF(String num){
+
+        Log.i(TAG,"The dtmf number '"+num+"' will be called.");
+        int sound=0;
+        if (num.equals("0")){
+            sound = R.raw.dtmf0;
+        }else if (num.equals("1")){
+            sound = R.raw.dtmf1;
+        }else if (num.equals("2")){
+            sound = R.raw.dtmf2;
+        }else if (num.equals("3")){
+            sound = R.raw.dtmf3;
+        }else if (num.equals("4")){
+            sound = R.raw.dtmf4;
+        }else if (num.equals("5")){
+            sound = R.raw.dtmf5;
+        }else if (num.equals("6")){
+            sound = R.raw.dtmf6;
+        }else if (num.equals("7")){
+            sound = R.raw.dtmf7;
+        }else if (num.equals("8")){
+            sound = R.raw.dtmf8;
+        }else if (num.equals("9")){
+            sound = R.raw.dtmf9;
+        }else if (num.equals("#")){
+            sound = R.raw.dtmfhash;
+        }else if (num.equals("*")){
+            sound = R.raw.dtmfstar;
+        }
+
+        if (sound!=0)
+            this.playTone(sound,false);
+
+    }
+
+    public synchronized void stopTone() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer = null;
+        }
+    }
+
+    private synchronized void playTone(int tone,boolean loop){
+
+        if (mediaPlayer!=null)
+            this.stopTone();
+
+        mediaPlayer = MediaPlayer.create(mContext,tone);
+        mediaPlayer.setLooping(loop);
+        mediaPlayer.start();
+
+    }
+}
