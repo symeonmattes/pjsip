@@ -1,6 +1,4 @@
 # PJSIP cordova plugin
-**NOTICE!** This project currently supports only Android devices and it has been tested only in devices with armabi architecture.
-
 This plugin is based on [PJSIP library](http://www.pjsip.org) version 2.5.5. PJSIP is an open source multimedia communication library writte in C language that supports many protocols including VoIP communications. The current implementation has used SIP, SDP, RTP protocols for VoIP telephony.
 
 # How to use
@@ -28,16 +26,26 @@ Further functions have been implemented in www/PJSIP.js, each of which is respon
 - PJSIP.acceptCall: Accepting an incoming call
 - PJSIP.muteMicrophone(arg0): Muting (arg0=true) or Unmuting (arg0=false) the microphone
 
+# Comments
 
+- This project has been tested in Android devices with armabi architecture and iPhone devices with arm64 and armv7 architecture.
+- After installation you need to add manually in Build settings the following configurations
+a. Apple LLVM 8.1 Preprocessing->Preprocessor Macros->(both debug/release) PJ_AUTOCONF=1
+b. Search paths->Header Search Paths -> (both debug/release in cordova plugin) 
+  i. fulllocation/pjsua/pjmedia
+  ii. fulllocation/pjsua/pjnath
+  iii. fulllocation/pjsua/pjlib-util
+  iv. fulllocation/pjsua/pjlib
+  v. fulllocation/pjsua/pjsip
 
 # Known issues
 
 You might encounter some issues after the installation.
 
 - All wav files used for the phone calls have been installed in res/raw folder. There might be necessary to correct in scAudioManager.java the corresponding import library (import com.ionicframework.infinity4uandroidv2841245.R;).
+- All configuration in build settings in iOS need to be done manually.
+
 
 # Acknowledgement
 
 This plugin has been supported by [Navarino](http://navarino.gr).
-
-
