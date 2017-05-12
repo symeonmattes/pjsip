@@ -165,18 +165,18 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
 
 
 
-    public synchronized void connect(final String id, final String user, final String pass, final String systemIP, final CallbackContext callbackContext) {
+    public synchronized void connect(final String user, final String pass, final String systemIP, final String proxyIP,final CallbackContext callbackContext) {
 
         String acc_id 	 = "sip:"+user+"@"+systemIP;
         String registrar = "sip:"+user+"@"+systemIP;
-        String proxy 	 = "";
+        String proxy 	 = proxyIP;
         String username  = user;
         String password  = pass;
 
         userSettings.put("user",user);
         userSettings.put("password",pass);
         userSettings.put("systemIP",systemIP);
-        userSettings.put("proxyIP","");
+        userSettings.put("proxyIP",proxyIP);
 
         Log.d(TAG, "Registration with the following settings: (acc_id,"+acc_id+"),(registrar,"+registrar+"),(proxy,"+proxy+"),(username,"+username+"),(password,"+password+")");
 
@@ -250,6 +250,7 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
             app.checkThread();
 
             try {
+                //DTMF string digits to be sent as described on RFC 2833 section 3.10.
                 currentCall.dialDtmf(num);
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
@@ -479,7 +480,6 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
 
     };
     public void notifyCallMediaState(MyCall call){
-        //utils.executeJavascript("alert(2);");
         Log.d(TAG,"======notifyCallMediaState======"+call.toString());
 
 

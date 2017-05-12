@@ -179,14 +179,13 @@ public class PJSIP extends CordovaPlugin {
 
 
     actions = PjsipActions.getInstance();
-    if (action.equals("connect")) {
-      final String id = args.getString(0);
-      final String user = args.getString(1);
-      final String pass = args.getString(2);
-      final String domain = args.getString(3);
+    if (action.equals("connect")) {      
+      final String user = args.getString(0);
+      final String pass = args.getString(1);
+      final String domain = args.getString(2);
+      final String proxy = args.getString(3);
 
-
-      actions.connect(id,user,pass,domain, callbackContext);
+      actions.connect(user,pass,domain,proxy, callbackContext);
 
     }if (action.equals("disconnect")) {
 

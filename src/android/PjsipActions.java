@@ -74,9 +74,9 @@ public class PjsipActions {
 
     }
 
-    public synchronized void connect(final String id, final String user, final String pass, final String domain, final CallbackContext callbackContext){
+    public synchronized void connect(final String user, final String pass, final String domain,final String proxy, final CallbackContext callbackContext){
 
-        pjsipActivity.connect(id,user,pass,domain, callbackContext);
+        pjsipActivity.connect(user,pass,domain,proxy, callbackContext);
 
     }
     public synchronized void disconnect(final CallbackContext callbackContext){

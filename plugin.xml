@@ -34,21 +34,21 @@
           -->
       </config-file>      
       
-      <source-file src="sounds/busytone.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf0.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf1.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf2.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf3.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf4.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf5.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf6.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf7.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf8.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmf9.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmfhash.wav" target-dir="res/raw/" />
-      <source-file src="sounds/dtmfstar.wav" target-dir="res/raw/" />
-      <source-file src="sounds/ringbacktone.wav" target-dir="res/raw/" />
-      <source-file src="sounds/ringtone.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/busytone.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf0.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf1.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf2.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf3.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf4.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf5.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf6.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf7.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf8.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmf9.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmfhash.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/dtmfstar.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/ringbacktone.mp3" target-dir="res/raw/" />
+      <source-file src="www/sounds/mp3/ringtone.mp3" target-dir="res/raw/" />
       
       <source-file src="src/android/PJSIP.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
       <source-file src="src/android/Utils.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
@@ -91,21 +91,6 @@
       <!-- <source-file src="src/android/jniLibs/x86_64/libpjsua2.so" target-dir="libs/x86_64" /> -->      
       
       
-      <!--
-      <source-file src="src/android/PJSIPCallActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
-      <source-file src="src/android/PJSIPMainActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
-      <source-file src="src/android/PJSIPMyApp.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/PJSIP/" />
-      
-      
-      
-      <source-file src="src/android/MyAccount.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAccount/" />
-      <source-file src="src/android/MyAccountConfig.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAccountConfig/" />
-      <source-file src="src/android/MyApp.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyApp/" />
-      <source-file src="src/android/MyAppObserver.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyAppObserver/" />
-      <source-file src="src/android/MyBuddy.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyBuddy/" />
-      <source-file src="src/android/MyCall.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyCall/" />
-      <source-file src="src/android/MyLogWriter.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/MyLogWriter/" />
-      -->
       
       <source-file src="src/android/api/PjCamera.java" target-dir="src/org/pjsip" />
       <source-file src="src/android/api/PjCameraInfo.java" target-dir="src/org/pjsip" />
@@ -374,13 +359,75 @@
 
         <config-file target="config.xml" parent="/*">
             <feature name="PJSIP">
-                <param name="ios-package" value="gr.navarino.PJSIP" />
+                <param name="ios-package" value="PJSIP" />
+                <param name="onload" value="true" />
             </feature>
             <!-- <preference name="StatusBarOverlaysWebView" value="true" />
             <preference name="StatusBarStyle" value="lightcontent" />             -->
         </config-file>
+        
+        
+        <!-- https://www.npmjs.com/package/cordova-custom-config -->
+        <!-- http://stackoverflow.com/questions/25348756/cordova-plugin-xml-add-header-search-paths-entry -->
+        <!-- <preference name="ios-XCBuildConfiguration-HEADER\_SEARCH\_PATHS" value="'/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjmedia' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjnath' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjlib-util' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjlib' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjsip' " buildType="release" xcconfigEnforce="true" /> -->
+        <!-- <preference name="ios-XCBuildConfiguration-HEADER\_SEARCH\_PATHS" value="'/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjmedia' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjnath' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjlib-util' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjlib' '/Users/iu/Desktop/GitProjects/extra/plugins/pjsip/src/ios/pjsua/pjsip' " buildType="debug" xcconfigEnforce="true" /> -->
+        
+        
+        
+        
         <!-- <header-file src="src/ios/PJSIP.h" /> -->
-        <source-file src="src/ios/PJSIP.h" />
+        <header-file src="src/ios/PJSIP.h" />
         <source-file src="src/ios/PJSIP.m" />
-    </platform>
+        <header-file src="src/ios/scAudioManager.h" />
+        <source-file src="src/ios/scAudioManager.m" />
+        <header-file src="src/ios/Utils.h" />
+        <source-file src="src/ios/Utils.m" />
+        <header-file src="src/ios/PjsipActions.h" />
+        <source-file src="src/ios/PjsipActions.m" />               
+        
+        
+        <asset src="www/sounds/mp3" target="sounds"/>
+
+        
+        
+        <!-- <framework src="CallKit.framework" />
+        <framework src="PushKit.framework" /> -->
+        
+        <framework src="CFNetwork.framework" />
+        <framework src="CoreImage.framework" />
+        <framework src="AudioToolbox.framework" />
+        <framework src="AVFoundation.framework" />
+        <framework src="OpenGLES.framework" />
+        <framework src="Foundation.framework" />
+        <framework src="CoreGraphics.framework" />
+        <framework src="CoreAudio.framework" />
+        <framework src="CoreVideo.framework" />
+        <framework src="UIKit.framework" />
+        <framework src="CoreFoundation.framework" />
+        <framework src="CoreMedia.framework" />
+        <framework src="QuartzCore.framework" />
+        
+        
+        
+        <source-file src="src/ios/arm64-v7/libg7221codec.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libgsmcodec.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libilbccodec.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpj.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjlib-util.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjmedia.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjmedia-audiodev.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjmedia-codec.a" framework="true" />                                
+        <source-file src="src/ios/arm64-v7/libpjmedia-videodev.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjnath.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsdp.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsip.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsip-simple.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsip-ua.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsua.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libpjsua2.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libresample.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libspeex.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libsrtp.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libyuv.a" framework="true" />
+      </platform>
 </plugin>
