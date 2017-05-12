@@ -30,7 +30,7 @@ Further functions have been implemented in www/PJSIP.js, each of which is respon
 
 - This project has been tested in Android devices with armabi architecture and iPhone devices with arm64 and armv7 architecture.
 - After installation you need to add manually in Build settings the following configurations
--- a. Apple LLVM 8.1 Preprocessing->Preprocessor Macros->(both debug/release) PJ_AUTOCONF=1
+a. Apple LLVM 8.1 Preprocessing->Preprocessor Macros->(both debug/release) PJ_AUTOCONF=1
 b. Search paths->Header Search Paths -> (both debug/release in cordova plugin) 
   i. fulllocation/pjsua/pjmedia
   ii. fulllocation/pjsua/pjnath
