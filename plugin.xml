@@ -366,6 +366,10 @@
             <preference name="StatusBarStyle" value="lightcontent" />             -->
         </config-file>
         
+        <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+            <string>$(PRODUCT_NAME) microphone use</string>
+        </config-file>
+        
         
         <!-- https://www.npmjs.com/package/cordova-custom-config -->
         <!-- http://stackoverflow.com/questions/25348756/cordova-plugin-xml-add-header-search-paths-entry -->
