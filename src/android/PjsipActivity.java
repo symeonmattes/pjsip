@@ -443,6 +443,8 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
             } else if (ci.getRole() == pjsip_role_e.PJSIP_ROLE_UAC){
 
                 if  (ci.getState().swigValue() == pjsip_inv_state.PJSIP_INV_STATE_CALLING.swigValue()){
+                    scAudioManager scAudio = scAudioManager.getInstance();
+                    scAudio.startRingbackTone();
                     utils.executeJavascript("cordova.plugins.PJSIP.callState({state:'outcall',outGoingCallNumber:'"+outGoingCallNumber+"'})");
                     Log.d(TAG,"======notifyCallState======PJSIP_INV_STATE_CALLING");
                 }else if  (ci.getState().swigValue() == pjsip_inv_state.PJSIP_INV_STATE_EARLY.swigValue()){

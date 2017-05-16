@@ -95,7 +95,6 @@ scAudioManager *scaudio = NULL;
       [[AVAudioSession sharedInstance] setDelegate:self];
       [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&sessionError];
 
-      [scaudio startRingbackTone];
       [pjactions makeCall:num];
       
 //      [self.commandDelegate runInBackground:^{

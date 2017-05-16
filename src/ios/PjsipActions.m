@@ -75,7 +75,8 @@ static void on_call_state(pjsua_call_id call_id, pjsip_event *e)
     
     
     if (strcmp(ci.state_text.ptr,"CALLING") == 0){
-        
+        scAudioManager *scaudio = [scAudioManager sharedInstance];
+        [scaudio startRingbackTone];
         [utils executeJavascript:[NSString stringWithFormat:@"cordova.plugins.PJSIP.callState({state:'outcall',outGoingCallNumber:'%@'});",outGoingCallNumber]];
     }else if (strcmp(ci.state_text.ptr,"CONFIRMED") == 0){
         scAudioManager *scaudio = [scAudioManager sharedInstance];

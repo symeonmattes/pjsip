@@ -123,7 +123,7 @@ public class PjsipActions {
 //        startRingbackTone();
 //        StartRingtone();
 //        startBusyTone();
-        scAudio.startRingbackTone();
+        // scAudio.startRingbackTone();
 
         cordova.getThreadPool().execute(new Runnable() {
             @Override
