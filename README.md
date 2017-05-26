@@ -44,6 +44,7 @@ You might encounter some issues after the installation.
 
 - All wav files used for the phone calls have been installed in res/raw folder. There might be necessary to correct in scAudioManager.java the corresponding import library (import com.ionicframework.infinity4uandroidv2841245.R;).
 - All configuration in build settings in iOS need to be done manually.
+- For x86 Android devices although there is registration there are error in make call. This has been tested only on emulators.
 
 
 # Acknowledgement
