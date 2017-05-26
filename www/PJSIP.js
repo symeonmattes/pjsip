@@ -68,15 +68,22 @@ PJSIP.prototype.callState = function(arg0,success, error) {
       this.stateCallIn(arg0.inComingCallNumber);
       break;
   }
+};
 
+PJSIP.prototype.actions = function(arg0,success, error) {
 
+  switch (arg0.action){
+    case "requestpermission":
+      this.requestPermission(arg0.success);
+      break;
+  }
 };
 
 PJSIP.prototype.stateCallOut = function(arg0){}
 PJSIP.prototype.stateCallEstablished = function(){}
 PJSIP.prototype.stateCallEnd = function(){}
 PJSIP.prototype.stateCallIn = function(arg0){}
-
+PJSIP.prototype.requestPermission = function(arg0){}
 
 
 module.exports = new PJSIP();

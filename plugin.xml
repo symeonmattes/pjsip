@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="gr.navarino.PJSIP" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="gr.navarino.PJSIP" version="0.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>PJSIP</name>
     <description>PJSIP plugin for SIP telephony</description>
     <js-module name="PJSIP" src="www/PJSIP.js">
@@ -13,18 +13,9 @@
             <param name="onload" value="true" />
         </feature>
       </config-file>
-      
+
       <config-file target="AndroidManifest.xml" parent="/*">
-          <uses-permission android:name="android.permission.USE_SIP" />
-          <uses-permission android:name="android.permission.INTERNET" />
-          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-          <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-          <uses-permission android:name="android.permission.WAKE_LOCK"/>
-          <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
           <uses-permission android:name="android.permission.RECORD_AUDIO" />
-          <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-          <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-          <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
           <!--
           <uses-feature android:name="android.hardware.sip.voip" android:required="true" />
@@ -71,8 +62,13 @@
       <source-file src="src/android/jniLibs/armeabi/libopenh264.so" target-dir="libs/arm64-v8a" />
       <source-file src="src/android/jniLibs/armeabi/libyuv.so" target-dir="libs/arm64-v8a" />    -->
       
-
+      <!-- https://libraries.io/github/VoiSmart/pjsip-android-builder  -->
+      <!-- https://github.com/VoiSmart/pjsip-android-builder -->
       <source-file src="src/android/jniLibs/armeabi/libpjsua2.so" target-dir="libs/armeabi" />
+      <source-file src="src/android/jniLibs/x86/libpjsua2.so" target-dir="libs/x86" />
+      <!-- <source-file src="src/android/jniLibs/x86/libopenh264.so" target-dir="libs/x86" />
+      <source-file src="src/android/jniLibs/x86/libyuv.so" target-dir="libs/x86" /> -->
+    
       <!-- <source-file src="src/android/jniLibs/armeabi/libopenh264.so" target-dir="libs/armeabi" /> -->
       <!-- <source-file src="src/android/jniLibs/armeabi/libyuv.so" target-dir="libs/armeabi" /> -->
       

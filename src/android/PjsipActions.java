@@ -1,10 +1,14 @@
 package gr.navarino.cordova.plugin;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaActivity;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.ToneGenerator;
 import android.net.Uri;
 import android.media.RingtoneManager;
@@ -14,6 +18,8 @@ import android.media.MediaPlayer;
 import android.nfc.Tag;
 import android.provider.Settings;
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.R;
 
@@ -29,15 +35,16 @@ import gr.navarino.cordova.plugin.Utils;
  * It guaranties that there is no problem between
  * Garbage Collector and PJSIP library
  */
-public class PjsipActions {
+public class PjsipActions extends CordovaActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
 
     private Context mContext;
     public static PjsipActivity pjsipActivity = null;
     public Utils utils = null;
 
-    final scAudioManager scAudio = scAudioManager.getInstance();
 
+    final scAudioManager scAudio = scAudioManager.getInstance();
+    private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO= 5000;
 
     private static CordovaInterface cordova = null;
     private static CordovaWebView webView =  null;
@@ -54,6 +61,9 @@ public class PjsipActions {
 
     public void initialise(CordovaInterface crd, CordovaWebView wbview){
         if (pjsipActivity == null){
+
+
+//            super.onRequestPermissionsResult(MY_PERMISSIONS_REQUEST_RECORD_AUDIO,new String[]{Manifest.permission.RECORD_AUDIO},MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
 
             cordova = crd;
             webView = wbview;
@@ -74,9 +84,10 @@ public class PjsipActions {
 
     }
 
-    public synchronized void connect(final String user, final String pass, final String domain,final String proxy, final CallbackContext callbackContext){
+    public synchronized Boolean connect(final String user, final String pass, final String domain,final String proxy, final CallbackContext callbackContext){
 
-        pjsipActivity.connect(user,pass,domain,proxy, callbackContext);
+
+        return pjsipActivity.connect(user,pass,domain,proxy, callbackContext);
 
     }
     public synchronized void disconnect(final CallbackContext callbackContext){
@@ -115,6 +126,9 @@ public class PjsipActions {
     }
 
 
+    public synchronized void askPermissions(){
+
+    }
 
 
     public synchronized void makeCall(final String number, final CallbackContext callbackContext){
@@ -129,22 +143,31 @@ public class PjsipActions {
             @Override
             public void run() {
                 pjsipActivity.makeCall(number, callbackContext);
-                callbackContext.success(); // Thread-safe.
             }
         });
 
     }
 
-    public void setSpeakerMode(Boolean isActive){
+    public void setSpeakerMode(Boolean isActive, final CallbackContext callbackContext){
 
-        scAudio.setSpeakerMode(isActive);
-
+        try{
+            scAudio.setSpeakerMode(isActive);
+            callbackContext.success();
+        } catch(Exception e){
+            callbackContext.error(e.toString());
+        }
 
     }
 
-    public void muteMicrophone(Boolean isActive){
+    public void muteMicrophone(Boolean isActive,final CallbackContext callbackContext){
 
-        scAudio.muteMicrophone(isActive);
+        try{
+            scAudio.muteMicrophone(isActive);
+            callbackContext.success();
+        } catch(Exception e){
+            callbackContext.error(e.toString());
+        }
+
 
 
     }
@@ -154,9 +177,7 @@ public class PjsipActions {
         cordova.getThreadPool().execute(new Runnable() {
             @Override
             public void run() {
-                pjsipActivity.holdCall(isActive);
-
-                callbackContext.success(); // Thread-safe.
+                pjsipActivity.holdCall(isActive,callbackContext);
 
             }
         });
@@ -172,9 +193,7 @@ public class PjsipActions {
             public void run() {
 
                 scAudio.playDTMF(num);
-                pjsipActivity.sendDTMF(num);
-
-                callbackContext.success(); // Thread-safe.
+                pjsipActivity.sendDTMF(num,callbackContext);
 
             }
         });

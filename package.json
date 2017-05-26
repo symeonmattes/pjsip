@@ -1,0 +1,31 @@
+{
+  "name": "cordova.plugins.PJSIP",
+  "version": "0.0.2",
+  "description": "VOIP based on PJSIP.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/symeonmattes/pjsip.git"
+  },
+  "keywords": [
+    "appplant",
+    "background",
+    "cordova",
+    "ecosystem:cordova"
+  ],
+  "platforms": [
+    "ios",
+    "android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=4.0.0"
+    }
+  ],
+  "author": "Symeon Mattes",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/symeonmattes/pjsip/issues"
+  },
+  "homepage": "https://github.com/symeonmattes/pjsip#readme"
+}

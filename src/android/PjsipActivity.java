@@ -1,6 +1,7 @@
 package gr.navarino.cordova.plugin;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaActivity;
 import org.pjsip.pjsua2.AccountConfig;
 import org.pjsip.pjsua2.AuthCredInfo;
 import org.pjsip.pjsua2.AuthCredInfoVector;
@@ -10,15 +11,22 @@ import org.pjsip.pjsua2.StringVector;
 import org.pjsip.pjsua2.pjsip_inv_state;
 import org.pjsip.pjsua2.pjsip_role_e;
 import org.pjsip.pjsua2.pjsip_status_code;
+
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,7 +51,7 @@ import gr.navarino.cordova.plugin.scAudioManager;
  * Created by infuser on 30/03/17.
  */
 
-public class PjsipActivity extends Activity implements Handler.Callback,MyAppObserver {
+public class PjsipActivity implements Handler.Callback,MyAppObserver {
 
     static private String TAG = "PjsipActivity";
     static private String outGoingCallNumber="";
@@ -63,6 +71,7 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
     private final Handler handler = new Handler(this);
 
 
+
     public class MSG_TYPE
     {
         public final static int INCOMING_CALL = 1;
@@ -78,12 +87,6 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-    }
 
 
     public void initialise(String absPath){
@@ -165,7 +168,10 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
 
 
 
-    public synchronized void connect(final String user, final String pass, final String systemIP, final String proxyIP,final CallbackContext callbackContext) {
+
+
+
+    public synchronized Boolean connect(final String user, final String pass, final String systemIP, final String proxyIP,final CallbackContext callbackContext) {
 
         String acc_id 	 = "sip:"+user+"@"+systemIP;
         String registrar = "sip:"+user+"@"+systemIP;
@@ -201,14 +207,22 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
         lastRegStatus = "";
         try {
             account.modify(accCfg);
-            callbackContext.success("Successfully registered");
+            if (callbackContext!=null)
+                callbackContext.success("Successfully registered");
+            else{
+                return true;
+            }
         } catch (Exception e) {
 
-            callbackContext.error("Logs:"+e.toString());
+            if (callbackContext!=null)
+                callbackContext.error("Logs:"+e.toString());
+            else{
+                return false;
+            }
             Log.e("PJSIP","Logs:"+e.toString());
 
         }
-
+        return true;
     }
 
     public void makeCall(final String number, final CallbackContext callbackContext) {
@@ -217,6 +231,7 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
             Log.w(TAG,"There is already a call");
             return;
         }
+
 
         String systemIP=userSettings.get("systemIP");
         String buddy_uri = "sip:"+number+"@"+systemIP;
@@ -232,10 +247,12 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
         try {
 
             call.makeCall(buddy_uri, prm);
+            callbackContext.success();
 
         } catch (Exception e) {
             call.delete();
             e.printStackTrace();
+            callbackContext.error(e.toString());
             return;
         }
 
@@ -244,7 +261,7 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
     }
 
 
-    public void sendDTMF(final String num) {
+    public void sendDTMF(final String num,final CallbackContext callbackContext) {
 
         if (currentCall != null){
             app.checkThread();
@@ -252,8 +269,10 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
             try {
                 //DTMF string digits to be sent as described on RFC 2833 section 3.10.
                 currentCall.dialDtmf(num);
+                callbackContext.success(); // Thread-safe.
             } catch (Exception e) {
                 Log.d(TAG,e.toString());
+                callbackContext.error(e.toString()); // Thread-safe.
             }
 
 
@@ -262,27 +281,26 @@ public class PjsipActivity extends Activity implements Handler.Callback,MyAppObs
 
 
 
-    public void holdCall(final Boolean isActive) {
+    public void holdCall(final Boolean isActive,final CallbackContext callbackContext) {
 
         if (currentCall != null){
             app.checkThread();
 
             CallOpParam prm = new CallOpParam(true);
-            if (isActive){
-                try {
-                    currentCall.setHold(prm);
-                } catch (Exception e) {
-                    Log.d(TAG,e.toString());
-                }
-            } else{
-                prm.getOpt().setFlag(1);
 
-                try {
+            try {
+                if (isActive){
+                    currentCall.setHold(prm);
+                } else{
+                    prm.getOpt().setFlag(1);
                     currentCall.reinvite(prm);
-                } catch (Exception e) {
-                    Log.d(TAG,e.toString());
                 }
+                callbackContext.success();
+            } catch (Exception e) {
+                Log.d(TAG,e.toString());
+                callbackContext.error(e.toString());
             }
+
         }
     }
 
