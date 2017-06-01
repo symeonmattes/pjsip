@@ -9,6 +9,7 @@ The PJSIP javascript object has four prototypes methods that can be overriden fo
 - PJSIP.stateCallEstablished(): Event triggered after establishing the call.
 - PJSIP.stateCallEnd(): Event triggered when a call has ended.
 - PJSIP.stateCallIn(arg0): Event triggered when there is an incoming call. arg0 is the number of the device that calls.
+- PJSIP.requestPermission(arg0): Event triggered only in Andrdoid devices with SDK>=23, as callback to accepting or denying RECORD_AUDIO permission.
 
 These methods can be used for changing the layout of the application.
 
