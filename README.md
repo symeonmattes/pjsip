@@ -50,4 +50,4 @@ You might encounter some issues after the installation.
 
 # Acknowledgement
 
-This plugin has been supported by [Navarino](http://navarino.gr).
+The development of this plugin has been sponsored by [Navarino](http://navarino.gr).
