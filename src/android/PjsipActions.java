@@ -56,7 +56,10 @@ public class PjsipActions extends CordovaActivity implements ActivityCompat.OnRe
         return ourInstance;
     }
 
-    private PjsipActions() {
+    private PjsipActions() {}
+
+    public Boolean isConnected(){
+        return pjsipActivity.isConnected();
     }
 
     public void initialise(CordovaInterface crd, CordovaWebView wbview){
@@ -76,23 +79,19 @@ public class PjsipActions extends CordovaActivity implements ActivityCompat.OnRe
             scAudio.initialise(cordova, webView);
 
 
-            utils = new Utils();
-            utils.init(cordova,webView);
-
-
         }
 
     }
 
-    public synchronized Boolean connect(final String user, final String pass, final String domain,final String proxy, final CallbackContext callbackContext){
+    public synchronized String connect(final String user, final String pass, final String domain,final String proxy, final CallbackContext callbackContext){
 
 
         return pjsipActivity.connect(user,pass,domain,proxy, callbackContext);
 
     }
-    public synchronized void disconnect(final CallbackContext callbackContext){
+    public synchronized String disconnect(final CallbackContext callbackContext){
 
-        pjsipActivity.disconnect(callbackContext);
+        return pjsipActivity.disconnect(callbackContext);
 
     }
 
@@ -133,12 +132,6 @@ public class PjsipActions extends CordovaActivity implements ActivityCompat.OnRe
 
     public synchronized void makeCall(final String number, final CallbackContext callbackContext){
 
-
-//        startRingbackTone();
-//        StartRingtone();
-//        startBusyTone();
-        // scAudio.startRingbackTone();
-
         cordova.getThreadPool().execute(new Runnable() {
             @Override
             public void run() {
@@ -152,7 +145,8 @@ public class PjsipActions extends CordovaActivity implements ActivityCompat.OnRe
 
         try{
             scAudio.setSpeakerMode(isActive);
-            callbackContext.success();
+            if (callbackContext!=null)
+                callbackContext.success();
         } catch(Exception e){
             callbackContext.error(e.toString());
         }

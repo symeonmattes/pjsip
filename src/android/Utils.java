@@ -4,6 +4,10 @@ package gr.navarino.cordova.plugin;
  * Created by infuser on 30/03/17.
  */
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
 
@@ -14,14 +18,15 @@ import java.util.*;
 
 public class Utils {
 
-
+    private static Context ctx;
     private static CordovaWebView appView = null;
     private static CordovaInterface cordova = null;
 
-    public static void init(CordovaInterface crd,CordovaWebView view){
+    public static void initialise(CordovaInterface crd,CordovaWebView view){
 
         appView = view;
         cordova = crd;
+        ctx = cordova.getActivity();
 
     }
 
@@ -111,7 +116,7 @@ public class Utils {
 
     /**
      * Get IP address from first non-localhost interface
-     * @param ipv42  true=return ipv4, false=return ipv6
+     * @param ipv4  true=return ipv4, false=return ipv6
      * @return  address or empty string
      */
     public static String getIPAddress(boolean useIPv4) {
@@ -139,6 +144,20 @@ public class Utils {
             }
         } catch (Exception ex) { } // for now eat exceptions
         return "";
+    }
+
+    public static String getWifiSSID(){
+        String ssid;
+        try{
+            WifiManager wifim = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo info = wifim.getConnectionInfo();
+            ssid = info.getSSID();
+        }catch(Exception e){
+            ssid = "error:"+e.toString();
+        }
+
+        return ssid;
+
     }
 
 

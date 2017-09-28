@@ -20,6 +20,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.net.Uri;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +49,7 @@ import android.util.Log;
 import gr.navarino.cordova.plugin.Utils;
 
 import gr.navarino.cordova.plugin.PjsipActions;
+import gr.navarino.cordova.plugin.PjsipDiagnostic;
 import org.pjsip.pjsua2.*;
 
 
@@ -70,6 +74,7 @@ public class PJSIP extends CordovaPlugin {
   public static TelephonyManager telephonyManager = null;
 
   private static PjsipActions  actions = null;
+  private static PjsipDiagnostic diagnostic = new PjsipDiagnostic();
 
   private Intent incomingCallIntent = null;
   private PendingIntent pendingCallIntent = null;
@@ -90,7 +95,7 @@ public class PJSIP extends CordovaPlugin {
 
     } catch (UnsatisfiedLinkError e) {
       Log.e(TAG,"UnsatisfiedLinkError: " + e.getMessage());
-      Log.e(TAG,"This could be safely ignored if you " + "don't need video.");
+
 
     }
 
@@ -108,12 +113,14 @@ public class PJSIP extends CordovaPlugin {
     Log.d("PJSIP", "initialize");
 
     Utils utils = new Utils();
+    utils.initialise(cordova,webView);
 
     super.initialize(cordova, webView);
     appView = webView;
 
     actions = PjsipActions.getInstance();
     actions.initialise(cordova, webView);
+
 
     Intent intent = cordova.getActivity().getIntent();
     dumpIntent(intent);
@@ -197,7 +204,7 @@ public class PJSIP extends CordovaPlugin {
           Log.d(TAG,"Permission granted MY_PERMISSIONS_REQUEST_RECORD_AUDIO");
 
 
-          if (actions.connect(pjsipUser,pjsipPass,pjsipDomain,pjsipProxy, null)) {
+          if (actions.connect(pjsipUser,pjsipPass,pjsipDomain,pjsipProxy, null).equals("true")) {
             utils.executeJavascript("cordova.plugins.PJSIP.actions({action:'requestpermission',success:true})");
           }else{
             utils.executeJavascript("cordova.plugins.PJSIP.actions({action:'requestpermission',success:false})");
@@ -238,7 +245,7 @@ public class PJSIP extends CordovaPlugin {
 
       int recordAudio = ContextCompat.checkSelfPermission(thisActivity, Manifest.permission.RECORD_AUDIO);
 
-      Log.d(TAG,"The record audio is:"+((recordAudio == PackageManager.PERMISSION_DENIED)?"not active":"active"));
+      Log.d(TAG,"The RECORD_AUDIO is:"+((recordAudio == PackageManager.PERMISSION_DENIED)?"not active":"active"));
       if (recordAudio == PackageManager.PERMISSION_DENIED) {
         return false;
       }else
@@ -290,11 +297,12 @@ public class PJSIP extends CordovaPlugin {
 
     } else if (action.equals("endcall")){
 
-        actions.endCall(callbackContext);
+      actions.endCall(callbackContext);
 
     } else if (action.equals("makecall")) {
       final String number = args.getString(0);
 
+      actions.setSpeakerMode(false,null);
       actions.makeCall(number,callbackContext);
 
     } else if (action.equals("acceptcall")) {
@@ -324,8 +332,54 @@ public class PJSIP extends CordovaPlugin {
 
       actions.sendDTMF(num,callbackContext);
 
-    }
+    }else if (action.equals("checkarchitecture")){
 
+      diagnostic.checkArchitecture(callbackContext);
+
+    }else if (action.equals("checkclientip")){
+
+      diagnostic.checkClientIP(callbackContext);
+
+    }else if (action.equals("checkpbxconnectivity")){
+
+        pjsipUser = args.getString(0);
+        pjsipPass = args.getString(1);
+        pjsipDomain = args.getString(2);
+        pjsipProxy = args.getString(3);
+
+        if (actions.isConnected()){
+          callbackContext.success("ALREADY CONNECTED");
+        }else{
+
+          //it should be used in combination with javascript (stateRegRegistered, and stateRegTimeout) to check connectivity
+          actions.connect(pjsipUser,pjsipPass,pjsipDomain,pjsipProxy, null);
+          callbackContext.success("CHECKING");
+
+        }
+    }else if (action.equals("checkaudio")){
+      diagnostic.checkAudio(callbackContext);
+    }else if (action.equals("getwifissid")){
+
+      String ssid = utils.getWifiSSID();
+      if (ssid.contains("error:")){
+          callbackContext.error(ssid);
+      }else{
+        callbackContext.success(ssid);
+      }
+
+    }else if (action.equals("checkpbxfirewall")){
+      final String host= args.getString(0);
+      final int port  = Integer.parseInt(args.getString(1));
+      cordova.getThreadPool().execute(new Runnable() {
+        @Override
+        public void run() {
+
+          diagnostic.checkPBXfirewall(host,port,callbackContext);
+
+        }
+      });
+
+    }
 
     return true;
 
