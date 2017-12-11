@@ -49,7 +49,6 @@ import android.util.Log;
 import gr.navarino.cordova.plugin.Utils;
 
 import gr.navarino.cordova.plugin.PjsipActions;
-import gr.navarino.cordova.plugin.PjsipDiagnostic;
 import org.pjsip.pjsua2.*;
 
 
@@ -74,7 +73,6 @@ public class PJSIP extends CordovaPlugin {
   public static TelephonyManager telephonyManager = null;
 
   private static PjsipActions  actions = null;
-  private static PjsipDiagnostic diagnostic = new PjsipDiagnostic();
 
   private Intent incomingCallIntent = null;
   private PendingIntent pendingCallIntent = null;
@@ -332,14 +330,6 @@ public class PJSIP extends CordovaPlugin {
 
       actions.sendDTMF(num,callbackContext);
 
-    }else if (action.equals("checkarchitecture")){
-
-      diagnostic.checkArchitecture(callbackContext);
-
-    }else if (action.equals("checkclientip")){
-
-      diagnostic.checkClientIP(callbackContext);
-
     }else if (action.equals("checkpbxconnectivity")){
 
         pjsipUser = args.getString(0);
@@ -356,8 +346,6 @@ public class PJSIP extends CordovaPlugin {
           callbackContext.success("CHECKING");
 
         }
-    }else if (action.equals("checkaudio")){
-      diagnostic.checkAudio(callbackContext);
     }else if (action.equals("getwifissid")){
 
       String ssid = utils.getWifiSSID();
@@ -366,18 +354,6 @@ public class PJSIP extends CordovaPlugin {
       }else{
         callbackContext.success(ssid);
       }
-
-    }else if (action.equals("checkpbxfirewall")){
-      final String host= args.getString(0);
-      final int port  = Integer.parseInt(args.getString(1));
-      cordova.getThreadPool().execute(new Runnable() {
-        @Override
-        public void run() {
-
-          diagnostic.checkPBXfirewall(host,port,callbackContext);
-
-        }
-      });
 
     }
 
