@@ -17,4 +17,10 @@
 - (void) declinecall:(CDVInvokedUrlCommand*)command;
 - (void) acceptcall:(CDVInvokedUrlCommand*)command;
 
+- (void) checkarchitecture:(CDVInvokedUrlCommand*)command;
+- (void) checkaudio:(CDVInvokedUrlCommand*)command;
+- (void) checkclientip:(CDVInvokedUrlCommand*)command;
+- (void) getwifissid:(CDVInvokedUrlCommand*)command;
+- (void) checkpbxconnectivity:(CDVInvokedUrlCommand*)command;
+
 @end

@@ -4,26 +4,32 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.ToneGenerator;
+import android.media.MediaRecorder;
 import android.util.Log;
 import android.media.MediaPlayer;
 
 import com.navarino.infinity4u.R;
 
+import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
+
+import java.io.IOException;
 
 /**
  * Created by infuser on 11/04/17.
  */
 public class scAudioManager {
 
-    private MediaPlayer mediaPlayer = null;
+    private MediaPlayer mPlayer = null;
+    private MediaRecorder mRecorder = null;
     private ToneGenerator mRingbackTone;
     private Ringtone mRingtone = null;
     private Context mContext;
     private static CordovaInterface cordova = null;
     private static CordovaWebView webView =  null;
     private static String TAG = "scAudioManager";
+    String tempFileName;
 
 
     private static scAudioManager ourInstance = new scAudioManager();
@@ -45,6 +51,7 @@ public class scAudioManager {
         webView = wbview;
 
         mContext = cordova.getActivity();
+        tempFileName=mContext.getExternalCacheDir().getAbsolutePath()+"/audiorecordtest.3gp";
 
     }
 
@@ -82,7 +89,7 @@ public class scAudioManager {
         this.stopTone();
     }
 
-    private synchronized void startBusyTone() {
+    public synchronized void startBusyTone() {
 
         this.playTone(R.raw.busytone,false);
 
@@ -123,21 +130,85 @@ public class scAudioManager {
 
     }
 
+
+    public void checkAudio(final CallbackContext callbackContext){
+
+        this.setSpeakerMode(true);
+
+        mPlayer = MediaPlayer.create(mContext,R.raw.ringbacktone);
+        mPlayer.setLooping(false);
+        this.startRecording();
+
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+                try {
+                    //stop recording
+                    mRecorder.stop();
+                    mRecorder.release();
+                    mRecorder = null;
+
+                    //play back the recorded file
+                    mPlayer = new MediaPlayer();
+                    mPlayer.setDataSource(tempFileName);
+                    mPlayer.prepare();
+                    mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            callbackContext.success("OK");
+                        }
+                    });
+                    mPlayer.start();
+
+
+                } catch (IOException e) {
+                    callbackContext.success("Failed - "+e.toString());
+                    Log.e("startPlayRecordedFile", "failed");
+                }
+
+
+
+            }
+        });
+
+        mPlayer.start();
+
+    }
+
     public synchronized void stopTone() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer = null;
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer = null;
         }
     }
 
     private synchronized void playTone(int tone,boolean loop){
 
-        if (mediaPlayer!=null)
+        if (mPlayer!=null)
             this.stopTone();
 
-        mediaPlayer = MediaPlayer.create(mContext,tone);
-        mediaPlayer.setLooping(loop);
-        mediaPlayer.start();
+        mPlayer = MediaPlayer.create(mContext,tone);
+        mPlayer.setLooping(loop);
+        mPlayer.start();
 
     }
+
+    public void startRecording(){
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(tempFileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e("startRecording", "prepare() failed");
+        }
+
+        mRecorder.start();
+
+    }
+
 }

@@ -52,6 +52,30 @@ PJSIP.prototype.acceptCall = function(success, error) {
     exec(success, error, "PJSIP", "acceptcall", []);
 };
 
+PJSIP.prototype.checkArchitecture = function(success,error){
+  exec(success,error,"PJSIP","checkarchitecture",[]);
+}
+
+PJSIP.prototype.checkClientIP = function(success,error){
+  exec(success,error,"PJSIP","checkclientip",[]);
+}
+
+PJSIP.prototype.checkPBXConnectivity = function(arg0, arg1, arg2, arg3,success,error){
+  exec(success,error,"PJSIP","checkpbxconnectivity",[arg0, arg1, arg2, arg3]);
+}
+
+PJSIP.prototype.checkAudio = function(success,error){
+  exec(success,error,"PJSIP","checkaudio",[]);
+}
+
+PJSIP.prototype.getWifiSSID = function(success,error){
+  exec(success,error,"PJSIP","getwifissid",[]);
+}
+
+PJSIP.prototype.checkPBXFirewall = function(arg0,arg1,success,error){
+  exec(success,error,"PJSIP","checkpbxfirewall",[arg0,arg1]);
+}
+
 PJSIP.prototype.callState = function(arg0,success, error) {
 
   switch (arg0.state){
@@ -70,6 +94,18 @@ PJSIP.prototype.callState = function(arg0,success, error) {
   }
 };
 
+PJSIP.prototype.regState = function(arg0,success,error){
+  switch (arg0.state){
+    case "registered":
+      this.stateRegRegistered();
+      break;
+    case "timeout":
+      this.stateRegTimeout();
+      break;
+  }
+
+}
+
 PJSIP.prototype.actions = function(arg0,success, error) {
 
   switch (arg0.action){
@@ -84,6 +120,7 @@ PJSIP.prototype.stateCallEstablished = function(){}
 PJSIP.prototype.stateCallEnd = function(){}
 PJSIP.prototype.stateCallIn = function(arg0){}
 PJSIP.prototype.requestPermission = function(arg0){}
-
+PJSIP.prototype.stateRegRegistered = function(){}
+PJSIP.prototype.stateRegTimeout = function(){}
 
 module.exports = new PJSIP();

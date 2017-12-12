@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="gr.navarino.PJSIP" version="0.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="gr.navarino.PJSIP" version="0.0.3" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>PJSIP</name>
     <description>PJSIP plugin for SIP telephony</description>
     <js-module name="PJSIP" src="www/PJSIP.js">
@@ -16,6 +16,8 @@
 
       <config-file target="AndroidManifest.xml" parent="/*">
           <uses-permission android:name="android.permission.RECORD_AUDIO" />
+          <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+          <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
           <!--
           <uses-feature android:name="android.hardware.sip.voip" android:required="true" />
@@ -52,6 +54,7 @@
       <source-file src="src/android/MyBuddy.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
       <source-file src="src/android/MyCall.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
       <source-file src="src/android/PjsipActivity.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
+      <source-file src="src/android/PjsipDiagnostic.java" target-dir="src/gr/navarino/cordova/plugin/PJSIP/" />
       
       
       
@@ -378,15 +381,15 @@
         <!-- <header-file src="src/ios/PJSIP.h" /> -->
         <header-file src="src/ios/PJSIP.h" />
         <source-file src="src/ios/PJSIP.m" />
-        <header-file src="src/ios/scAudioManager.h" />
-        <source-file src="src/ios/scAudioManager.m" />
         <header-file src="src/ios/Utils.h" />
         <source-file src="src/ios/Utils.m" />
-        <header-file src="src/ios/PjsipActions.h" />
-        <source-file src="src/ios/PjsipActions.m" />               
+        <!-- <header-file src="src/ios/PjsipActions.h" />
+        <source-file src="src/ios/PjsipActions.m" />                -->
+        <header-file src="src/ios/PjsipDiagnostics.h" />
+        <source-file src="src/ios/PjsipDiagnostics.m" />        
+        <!-- <header-file src="src/ios/scAudioManager.h" />
+        <source-file src="src/ios/scAudioManager.m" />         -->
         
-        
-        <asset src="www/sounds/mp3" target="sounds"/>
 
         
         
@@ -408,6 +411,8 @@
         <framework src="QuartzCore.framework" />
         
         
+        <!-- 
+        <asset src="www/sounds/mp3" target="sounds"/>
         
         <source-file src="src/ios/arm64-v7/libg7221codec.a" framework="true" />
         <source-file src="src/ios/arm64-v7/libgsmcodec.a" framework="true" />
@@ -428,6 +433,6 @@
         <source-file src="src/ios/arm64-v7/libresample.a" framework="true" />
         <source-file src="src/ios/arm64-v7/libspeex.a" framework="true" />
         <source-file src="src/ios/arm64-v7/libsrtp.a" framework="true" />
-        <source-file src="src/ios/arm64-v7/libyuv.a" framework="true" />
+        <source-file src="src/ios/arm64-v7/libyuv.a" framework="true" /> -->
       </platform>
 </plugin>

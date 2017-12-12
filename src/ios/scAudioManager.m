@@ -177,5 +177,88 @@
 }
 
 
+AVAudioRecorder *recorder;
+NSString * recorderFilePath;
+- (void) startRecording{
+    
+    
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    NSError *err = nil;
+    [audioSession setCategory :AVAudioSessionCategoryPlayAndRecord error:&err];
+    if(err){
+        NSLog(@"audioSession: %@ %ld %@", [err domain], (long)[err code], [[err userInfo] description]);
+        return;
+    }
+    [audioSession setActive:YES error:&err];
+    err = nil;
+    if(err){
+        NSLog(@"audioSession: %@ %ld %@", [err domain], (long)[err code], [[err userInfo] description]);
+        return;
+    }
+    
+    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
+    
+    [recordSetting setValue :[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
+    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
+    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
+    
+    [recordSetting setValue :[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
+    [recordSetting setValue :[NSNumber numberWithBool:NO] forKey:AVLinearPCMIsBigEndianKey];
+    [recordSetting setValue :[NSNumber numberWithBool:NO] forKey:AVLinearPCMIsFloatKey];
+    
+    
+    
+    // Create a new dated file
+    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSString *caldate = [now description];
+    NSString *dcfolder=[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    recorderFilePath = [NSString stringWithFormat:@"%@/%@.caf", dcfolder, caldate];
+    
+    NSURL *url = [NSURL fileURLWithPath:recorderFilePath];
+    err = nil;
+    recorder = [[ AVAudioRecorder alloc] initWithURL:url settings:recordSetting error:&err];
+    if(!recorder){
+        NSLog(@"recorder: %@ %ld %@", [err domain], (long)[err code], [[err userInfo] description]);
+    }
+    
+    [recorder prepareToRecord];
+    recorder.meteringEnabled = YES;
+    
+    [recorder record];
+    
+}
+
+-(void) checkAudio{
+    
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       
+        [self startRecording];
+        
+        [self setSpeakerMode:YES];
+        NSString *soundFilePath = [NSString stringWithFormat:@"%@",[[NSBundle mainBundle] pathForResource:@"www/sounds/ringbacktone" ofType:@"mp3"]];
+        [self playTone:soundFilePath Loop:NO];
+        
+        
+        
+    });
+    
+    
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    // set finish image
+    NSLog(@"Audio did finish.");
+    
+    
+    if (recorder){
+        [recorder stop];
+        recorder=NULL;
+        [self setSpeakerMode:YES];
+        [self playTone:recorderFilePath Loop:NO];
+        
+    }
+    
+}
 
 @end

@@ -39,5 +39,6 @@ typedef enum AudioDevice:NSUInteger{
 -(void) playDTMF:(NSString *) num;
 -(void) stopTone;
 
+-(void) checkAudio;
 
 @end

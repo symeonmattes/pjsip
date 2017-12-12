@@ -13,32 +13,52 @@
 @implementation PjsipActions: NSObject
 
     NSDictionary * pjuser;
+    BOOL isconnected = NO;
 
-static pjsua_acc_id acc_id;
-static pjsua_call_id callId;
-
-
-const size_t MAX_SIP_ID_LENGTH = 50;
-const size_t MAX_SIP_REG_URI_LENGTH = 50;
+    static pjsua_acc_id acc_id;
+    static pjsua_call_id callId;
 
 
-static NSString* outGoingCallNumber = @"";
-static NSString* inComingCallNumber = @"";
+    const size_t MAX_SIP_ID_LENGTH = 50;
+    const size_t MAX_SIP_REG_URI_LENGTH = 50;
 
 
-static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_data *rdata);
-static void on_call_state(pjsua_call_id call_id, pjsip_event *e);
-static void on_call_media_state(pjsua_call_id call_id);
-static void error_exit(const char *title, pj_status_t status);
+    static NSString* outGoingCallNumber = @"";
+    static NSString* inComingCallNumber = @"";
 
-static Utils *utils = NULL;
+    static void on_reg_state(pjsua_acc_id acc_id);
+    static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_data *rdata);
+    static void on_call_state(pjsua_call_id call_id, pjsip_event *e);
+    static void on_call_media_state(pjsua_call_id call_id);
+    static void error_exit(const char *title, pj_status_t status);
+
+    static Utils *utils = NULL;
 
 
 //https://xianwen.me/2017/04/08/how-to-make-an-ios-voip-app-with-pjsip-part-1/
 
+static void on_reg_state(pjsua_acc_id acc_id){
+    NSLog(@"=============on_reg_state==============acc_id:%d",acc_id);
+    
+//    pjsua_call_info ci;
+//    
+//    pjsua_reg_info();
+//    
+//    pjsua_call_get_info(call_id, &ci);
+    
+    
+    isconnected = YES;
+    [utils executeJavascript:@"cordova.plugins.PJSIP.regState({state:'registered'});"];
+    
+    
+//    [utils executeJavascript:@"cordova.plugins.PJSIP.regState({state:'timeout'});"];
+    
+}
+
+
+
 /* Callback called by the library upon receiving incoming call */
-static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
-                             pjsip_rx_data *rdata)
+static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,pjsip_rx_data *rdata)
 {
     pjsua_call_info ci;
     
@@ -124,6 +144,8 @@ int startPjsip()
 {
     pj_status_t status;
     
+    isconnected = NO;
+    
     // Create pjsua first
     status = pjsua_create();
     if (status != PJ_SUCCESS) error_exit("Error in pjsua_create()", status);
@@ -139,6 +161,7 @@ int startPjsip()
         cfg.cb.on_incoming_call = &on_incoming_call;
         cfg.cb.on_call_media_state = &on_call_media_state;
         cfg.cb.on_call_state = &on_call_state;
+        cfg.cb.on_reg_state = &on_reg_state;
         
         // Init the logging config structure
         pjsua_logging_config log_cfg;
@@ -210,6 +233,8 @@ int startPjsip()
 }
 
 
+
+
 void modifyPjsipUser(char *user, char *password, char* domain, char *proxy){
   
     pj_status_t status;
@@ -249,6 +274,10 @@ void modifyPjsipUser(char *user, char *password, char* domain, char *proxy){
     }
 }
 
+-(BOOL) isConnected{
+    return isconnected;
+}
+
 -(void) initialise:(id)dlg{
     
     utils = [[Utils alloc] init ];
@@ -278,6 +307,7 @@ void modifyPjsipUser(char *user, char *password, char* domain, char *proxy){
 
 -(void) unregisterPBX{
     
+    isconnected = false;
     modifyPjsipUser("","","localhost","");
 }
 

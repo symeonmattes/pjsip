@@ -70,6 +70,8 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
 
     private final Handler handler = new Handler(this);
 
+    private Boolean isConnected = false;
+
 
 
     public class MSG_TYPE
@@ -81,16 +83,16 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
         public final static int CALL_MEDIA_STATE = 5;
     }
 
-    public void PjSipActivity(){
+    public void PjSipActivity(){}
 
 
-
+    public Boolean isConnected(){
+        return this.isConnected;
     }
-
-
 
     public void initialise(String absPath){
 
+        this.isConnected = false;
         if (app == null){
 
             app = new MyApp();
@@ -119,50 +121,65 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
 
 
 
-    public synchronized void disconnect(final CallbackContext callbackContext) {
+    public synchronized String disconnect(final CallbackContext callbackContext) {
 
-
-        String acc_id 	 = "sip:localhost";
-        String registrar = "";
-        String proxy 	 = "";
-        String username  = "";
-        String password  = "";
-
-        userSettings.put("user","");
-        userSettings.put("password","");
-        userSettings.put("systemIP","");
-        userSettings.put("proxyIP","");
-
-        Log.d(TAG, "Registration with the following settings: (acc_id,"+acc_id+"),(registrar,"+registrar+"),(proxy,"+proxy+"),(username,"+username+"),(password,"+password+")");
-
-        app.checkThread();
-        accCfg.setIdUri(acc_id);
-        accCfg.getRegConfig().setRegistrarUri(registrar);
-        AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
-        creds.clear();
-        if (username.length() != 0) {
-            creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
-        }
-        StringVector proxies = accCfg.getSipConfig().getProxies();
-        proxies.clear();
-        if (proxy.length() != 0) {
-            proxies.add(proxy);
-        }
-
-        /* Enable ICE */
-        accCfg.getNatConfig().setIceEnabled(true);
-
-        /* Finally */
-        lastRegStatus = "";
         try {
+            String acc_id 	 = "sip:localhost";
+            String registrar = "";
+            String proxy 	 = "";
+            String username  = "";
+            String password  = "";
+
+            userSettings.put("user","");
+            userSettings.put("password","");
+            userSettings.put("systemIP","");
+            userSettings.put("proxyIP","");
+
+            Log.d(TAG, "Registration with the following settings: (acc_id,"+acc_id+"),(registrar,"+registrar+"),(proxy,"+proxy+"),(username,"+username+"),(password,"+password+")");
+
+            app.checkThread();
+            accCfg.setIdUri(acc_id);
+            accCfg.getRegConfig().setRegistrarUri(registrar);
+            AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
+            creds.clear();
+            if (username.length() != 0) {
+                creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
+            }
+            StringVector proxies = accCfg.getSipConfig().getProxies();
+            proxies.clear();
+            if (proxy.length() != 0) {
+                proxies.add(proxy);
+            }
+
+            /* Enable ICE */
+            accCfg.getNatConfig().setIceEnabled(true);
+
+            /* Finally */
+            lastRegStatus = "";
+
             account.modify(accCfg);
-            callbackContext.success("Successfully registered");
+            this.isConnected = false;
+            if (callbackContext!=null)
+                callbackContext.success("Successfully disconnected");
+            else
+                return "true";
+
+
         } catch (Exception e) {
 
-            callbackContext.error("Logs:"+e.toString());
-            Log.e("PJSIP","Logs:"+e.toString());
+            if (callbackContext!=null) {
+                callbackContext.error("Logs:" + e.toString());
+                Log.e("PJSIP", "Logs:" + e.toString());
+            }else
+                return e.toString();
+
 
         }
+        return "true";
+
+
+
+
 
     }
 
@@ -171,58 +188,59 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
 
 
 
-    public synchronized Boolean connect(final String user, final String pass, final String systemIP, final String proxyIP,final CallbackContext callbackContext) {
+    public synchronized String connect(final String user, final String pass, final String systemIP, final String proxyIP,final CallbackContext callbackContext) {
 
-        String acc_id 	 = "sip:"+user+"@"+systemIP;
-        String registrar = "sip:"+user+"@"+systemIP;
-        String proxy 	 = proxyIP;
-        String username  = user;
-        String password  = pass;
-
-        userSettings.put("user",user);
-        userSettings.put("password",pass);
-        userSettings.put("systemIP",systemIP);
-        userSettings.put("proxyIP",proxyIP);
-
-        Log.d(TAG, "Registration with the following settings: (acc_id,"+acc_id+"),(registrar,"+registrar+"),(proxy,"+proxy+"),(username,"+username+"),(password,"+password+")");
-
-        app.checkThread();
-        accCfg.setIdUri(acc_id);
-        accCfg.getRegConfig().setRegistrarUri(registrar);
-        AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
-        creds.clear();
-        if (username.length() != 0) {
-            creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
-        }
-        StringVector proxies = accCfg.getSipConfig().getProxies();
-        proxies.clear();
-        if (proxy.length() != 0) {
-            proxies.add(proxy);
-        }
-
-        /* Enable ICE */
-        accCfg.getNatConfig().setIceEnabled(true);
-
-        /* Finally */
-        lastRegStatus = "";
         try {
+            String acc_id 	 = "sip:"+user+"@"+systemIP;
+            String registrar = "sip:"+user+"@"+systemIP;
+            String proxy 	 = proxyIP;
+            String username  = user;
+            String password  = pass;
+
+            userSettings.put("user",user);
+            userSettings.put("password",pass);
+            userSettings.put("systemIP",systemIP);
+            userSettings.put("proxyIP",proxyIP);
+
+            Log.d(TAG, "Registration with the following settings: (acc_id,"+acc_id+"),(registrar,"+registrar+"),(proxy,"+proxy+"),(username,"+username+"),(password,"+password+")");
+
+            app.checkThread();
+            accCfg.setIdUri(acc_id);
+            accCfg.getRegConfig().setRegistrarUri(registrar);
+            AuthCredInfoVector creds = accCfg.getSipConfig().getAuthCreds();
+            creds.clear();
+            if (username.length() != 0) {
+                creds.add(new AuthCredInfo("Digest", "*", username, 0, password));
+            }
+            StringVector proxies = accCfg.getSipConfig().getProxies();
+            proxies.clear();
+            if (proxy.length() != 0) {
+                proxies.add(proxy);
+            }
+
+            /* Enable ICE */
+            accCfg.getNatConfig().setIceEnabled(true);
+
+            /* Finally */
+            lastRegStatus = "";
+
             account.modify(accCfg);
             if (callbackContext!=null)
                 callbackContext.success("Successfully registered");
             else{
-                return true;
+                return "true";
             }
         } catch (Exception e) {
-
+            this.isConnected = false;
             if (callbackContext!=null)
                 callbackContext.error("Logs:"+e.toString());
             else{
-                return false;
+                return e.toString();
             }
             Log.e("PJSIP","Logs:"+e.toString());
 
         }
-        return true;
+        return "true";
     }
 
     public void makeCall(final String number, final CallbackContext callbackContext) {
@@ -394,6 +412,14 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
 
         Log.d(TAG,"========notifyRegState========"+"Code:"+code+", reason:"+reason+", expiration:"+expiration);
 
+        if (code == pjsip_status_code.PJSIP_SC_OK){
+            this.isConnected = true;
+            utils.executeJavascript("cordova.plugins.PJSIP.regState({state:'registered'})");
+        }else if (code == pjsip_status_code.PJSIP_SC_REQUEST_TIMEOUT){
+            this.isConnected = false;
+            utils.executeJavascript("cordova.plugins.PJSIP.regState({state:'timeout'})");
+        }
+
     };
     public synchronized void notifyIncomingCall(MyCall call){
         Log.d(TAG,"=====notifyIncomingCall=========");
@@ -409,10 +435,6 @@ public class PjsipActivity implements Handler.Callback,MyAppObserver {
             call.delete();
             return;
         }
-
-
-
-
 
         scAudioManager scAudio = scAudioManager.getInstance();
         scAudio.startRingtone();

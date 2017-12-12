@@ -9,7 +9,9 @@ The PJSIP javascript object has four prototypes methods that can be overriden fo
 - PJSIP.stateCallEstablished(): Event triggered after establishing the call.
 - PJSIP.stateCallEnd(): Event triggered when a call has ended.
 - PJSIP.stateCallIn(arg0): Event triggered when there is an incoming call. arg0 is the number of the device that calls.
-- PJSIP.requestPermission(arg0): Event triggered only in Andrdoid devices with SDK>=23, as callback to accepting or denying RECORD_AUDIO permission.
+- PJSIP.requestPermission(arg0): Event triggered only in Android devices with SDK>=23, as callback to accepting or denying RECORD_AUDIO permission.
+- PJSIP.stateRegRegistered(): Event triggered when the device has successfully logged in.
+- PJSIP.stateRegTimeout(): Event triggered after an unsuccessful registration 
 
 These methods can be used for changing the layout of the application.
 
@@ -19,13 +21,18 @@ Further functions have been implemented in www/PJSIP.js, each of which is respon
 - PJSIP.connect(arg0,arg1,arg2,arg3): User arg0 with password ar1 connects to system with IP arg2 and Proxy IP arg3. arg3 most of the times is not necessary and '' can be used.
 - PJSIP.disconnect: Unregistering from the system. 
 - PJSIP.makeCall(arg0): Making a call to device arg0.
-- PJSIP.endCall: Ending a call
-- PJSIP.muteCall: Muting a call
-- PSJIP.activateSpeaker: Activating the speaker
-- PJSIP.dtmfCall(arg0): Sending dtmf number arg0
-- PJSIP.declineCall: Declining an incoming call
-- PJSIP.acceptCall: Accepting an incoming call
-- PJSIP.muteMicrophone(arg0): Muting (arg0=true) or Unmuting (arg0=false) the microphone
+- PJSIP.endCall: Ending a call.
+- PJSIP.muteCall: Muting a call.
+- PSJIP.activateSpeaker: Activating the speaker.
+- PJSIP.dtmfCall(arg0): Sending dtmf number arg0.
+- PJSIP.declineCall: Declining an incoming call.
+- PJSIP.acceptCall: Accepting an incoming call.
+- PJSIP.muteMicrophone(arg0): Muting (arg0=true) or Unmuting (arg0=false) the microphone.
+- PJSIP.checkArchitecture: returns the current architecture of the device.
+- PJSIP.checkClientIP: return the device current IP address.
+- PJSP.checkPBXConnectivity: used in combination with PJSIP.stateRegRegistered and PJSIP.stateRegTimeout to check the connectivity with the PBX system.
+- PJSIP.checkAudio: check if the microphone and loudspeaker works properly.
+- PJSIP.getWifiSSID: used in diagnostic tests to find the wifi ssid.
 
 # Comments
 
