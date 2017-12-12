@@ -8,8 +8,6 @@ import android.media.MediaRecorder;
 import android.util.Log;
 import android.media.MediaPlayer;
 
-import com.navarino.infinity4u.R;
-
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
