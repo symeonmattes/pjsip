@@ -14,6 +14,8 @@ import org.apache.cordova.CordovaWebView;
 
 import java.io.IOException;
 
+import io.ionic.starter.R;
+
 /**
  * Created by infuser on 11/04/17.
  */
