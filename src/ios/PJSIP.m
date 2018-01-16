@@ -1,6 +1,6 @@
 #import "PJSIP.h"
-//#import "PjsipActions.h"
-//#import "scAudioManager.h"
+#import "PjsipActions.h"
+#import "scAudioManager.h"
 #import "PjsipDiagnostics.h"
 #import <Cordova/CDVPlugin.h>
 #import <AVFoundation/AVFoundation.h>
@@ -13,17 +13,17 @@
 
 @implementation PJSIP
 
-//PjsipActions *pjactions = NULL;
-//scAudioManager *scaudio = NULL;
+PjsipActions *pjactions = NULL;
+scAudioManager *scaudio = NULL;
 PjsipDiagnostics *pjdiagn = NULL;
 
 
 - (void)pluginInitialize{
     
-//    pjactions = [[PjsipActions alloc] init];
-//    [pjactions initialise:self.commandDelegate];
+    pjactions = [[PjsipActions alloc] init];
+    [pjactions initialise:self.commandDelegate];
     
-//    scaudio = [scAudioManager sharedInstance];
+    scaudio = [scAudioManager sharedInstance];
     
     pjdiagn = [PjsipDiagnostics sharedInstance];
     
@@ -71,7 +71,7 @@ PjsipDiagnostics *pjdiagn = NULL;
     
     if ([msg length]==0) {
         
-//        [pjactions registerPBX:user Password:pass systemIpAddress:systemIPAddress proxyIpAddress:proxyIPAddress];
+        [pjactions registerPBX:user Password:pass systemIpAddress:systemIPAddress proxyIpAddress:proxyIPAddress];
         
         
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"All parameters are correct"];
@@ -100,7 +100,7 @@ PjsipDiagnostics *pjdiagn = NULL;
         [[AVAudioSession sharedInstance] setDelegate:self];
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&sessionError];
         
-//        [pjactions makeCall:num];
+        [pjactions makeCall:num];
         
         //      [self.commandDelegate runInBackground:^{
         //
@@ -120,8 +120,8 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     
     
-//    [scaudio stopTone];
-//    [pjactions rejectCall];
+   [scaudio stopTone];
+   [pjactions rejectCall];
     
     
     
@@ -133,7 +133,7 @@ PjsipDiagnostics *pjdiagn = NULL;
 - (void) disconnect:(CDVInvokedUrlCommand*)command{
     CDVPluginResult* pluginResult = nil;
     
-//    [pjactions unregisterPBX];
+   [pjactions unregisterPBX];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"The user will be disconnected."];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -151,7 +151,7 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     NSString* isActivated = [command.arguments objectAtIndex:0];
     
-//    [scaudio setSpeakerMode:[isActivated boolValue]];
+   [scaudio setSpeakerMode:[isActivated boolValue]];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Speaker has been %@.",[isActivated boolValue]?@"enabled":@"disabled" ]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -162,8 +162,8 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     NSString* dtmfNumber = [command.arguments objectAtIndex:0];
     
-//    [scaudio playDTMF:dtmfNumber];
-//    [pjactions playDTMF:dtmfNumber];
+   [scaudio playDTMF:dtmfNumber];
+   [pjactions playDTMF:dtmfNumber];
     
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Mute has been ."];
@@ -175,7 +175,7 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     NSString* isMuted = [command.arguments objectAtIndex:0];
     
-//    [scaudio muteMicrophone:[isMuted boolValue]];
+   [scaudio muteMicrophone:[isMuted boolValue]];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Mute has been %@.",[isMuted boolValue]?@"enabled":@"disabled" ]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -185,7 +185,7 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     NSString* isOnHold = [command.arguments objectAtIndex:0];
     
-//    [pjactions holdCall:[isOnHold boolValue]];
+   [pjactions holdCall:[isOnHold boolValue]];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Mute has been ."];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -195,8 +195,8 @@ PjsipDiagnostics *pjdiagn = NULL;
     
     CDVPluginResult* pluginResult = nil;
     
-//    [scaudio stopRingtone];
-//    [pjactions rejectCall];
+   [scaudio stopRingtone];
+   [pjactions rejectCall];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Call has been declined."];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -207,8 +207,8 @@ PjsipDiagnostics *pjdiagn = NULL;
     CDVPluginResult* pluginResult = nil;
     
     
-//    [scaudio stopRingtone];
-//    [pjactions acceptCall];
+   [scaudio stopRingtone];
+   [pjactions acceptCall];
     
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Call has been accepted."];
@@ -228,7 +228,7 @@ PjsipDiagnostics *pjdiagn = NULL;
 - (void) checkaudio:(CDVInvokedUrlCommand*)command{
     CDVPluginResult* pluginResult = nil;
     
-//    [scaudio checkAudio];
+   [scaudio checkAudio];
     
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OK"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -272,13 +272,13 @@ PjsipDiagnostics *pjdiagn = NULL;
     NSString* systemIPAddress = [command.arguments objectAtIndex:2];
     NSString* proxyIPAddress = [command.arguments objectAtIndex:3];
     
-//    if ([pjactions isConnected]){
-//        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ALREADY CONNECTED"];
-//    }else{
-        //it should be used in combination with javascript (stateRegRegistered, and stateRegTimeout) to check connectivity
-//        [pjactions registerPBX:user Password:pass systemIpAddress:systemIPAddress proxyIpAddress:proxyIPAddress];
-//        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CHECKING"];
-//    }
+     if ([pjactions isConnected]){
+         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ALREADY CONNECTED"];
+     }else{
+          it should be used in combination with javascript (stateRegRegistered, and stateRegTimeout) to check connectivity
+         [pjactions registerPBX:user Password:pass systemIpAddress:systemIPAddress proxyIpAddress:proxyIPAddress];
+         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CHECKING"];
+     }
     
     
     
