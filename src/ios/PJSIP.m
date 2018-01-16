@@ -275,7 +275,7 @@ PjsipDiagnostics *pjdiagn = NULL;
      if ([pjactions isConnected]){
          pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ALREADY CONNECTED"];
      }else{
-          it should be used in combination with javascript (stateRegRegistered, and stateRegTimeout) to check connectivity
+         // it should be used in combination with javascript (stateRegRegistered, and stateRegTimeout) to check connectivity
          [pjactions registerPBX:user Password:pass systemIpAddress:systemIPAddress proxyIpAddress:proxyIPAddress];
          pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CHECKING"];
      }
